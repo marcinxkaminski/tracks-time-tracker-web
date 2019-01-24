@@ -200,8 +200,7 @@ export const DataManager = {
     },
 
     getTask: function (id) {
-        
-        if (id) {
+        if (id !== null && id !== undefined) {
             const projects = this.getProjects();
             if (projects) {
                 for (var i = 0; i < projects.length; ++i) {
@@ -237,7 +236,7 @@ export const DataManager = {
 
     addWorkingLog: function (log) {
         
-        if (log.id) {
+        if (log.id !== null && log.id !== undefined) {
             Service.stopCounting(log);
             const data = this.getData();
             if (data) {
@@ -259,9 +258,10 @@ export const DataManager = {
     },
 
     saveTmpWorkingLog: function (id, time) {
-        if (id && time) {
+        if (id !==null && id !== undefined && time) {
             const timeToSave = TimeConverter.getCurrentTime() + time;
             localStorage.setItem(id, timeToSave);
+            return true;
         }
     },
 

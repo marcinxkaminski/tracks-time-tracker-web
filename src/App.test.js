@@ -2,7 +2,7 @@ import React from 'react';
 import { expect } from 'chai';
 import Adapter from 'enzyme-adapter-react-16';
 import Enzyme, { shallow } from 'enzyme';
-import { exists } from 'fs';
+import { Service } from './utils/Service.js';
 import { DataManager } from './utils/DataManager';
 import { TimeConverter } from './utils/TimeConverter';
 import FormButton from './components/common/FormButton';
@@ -49,7 +49,9 @@ describe('Data Manager', () => {
     const mockData = {
       name: 'test',
       projects: [
-        {id:0, tasks: []}
+        {name:'test', id:0, tasks: [
+          {name:'test', id:0, projectId:0, working: []}
+        ]}
       ]
     };
     DataManager.setData(mockData);
@@ -84,9 +86,17 @@ describe('Data Manager', () => {
     expect(DataManager.getUserDetails().name).to.equal('test');
   });
 
-  it('sets user details', () => {});
+  it('sets user details', () => {
+    var userDetails = DataManager.getUserDetails();
+    userDetails.name = 'changedName';
+    DataManager.setUserDetails(userDetails);
+    expect(DataManager.getUserDetails().name).to.equal('changedName');
+  });
 
-  it('gets daily overview', () => {});
+  it('gets daily overview', () => {
+    const dailyOverview = DataManager.getDailyOverview();
+    expect(dailyOverview).exist;
+  });
 
   it('gets projects', () => {
     expect(DataManager.getProjects().length).to.equal(1);
@@ -102,35 +112,67 @@ describe('Data Manager', () => {
     expect(DataManager.getProjects().length).to.equal(2);
   });
 
-  it('edits project', () => {});
+  it('edits project', () => {
+    var project = DataManager.getProject(0);
+    project.name = 'changedName';
+    DataManager.editProject(project);
+    expect(DataManager.getProject(0).name).to.equal('changedName');
+  });
 
-  it('removes project', () => {});
+  it('removes project', () => {
+    DataManager.removeProject(DataManager.getProject(0));
+    expect(DataManager.getProject(0)).not.exist;
+  });
 
-  it('gets max projects id', () => {});
+  it('gets max projects id', () => {
+    expect(DataManager.getMaxProjectID()).to.equal(0);
+  });
 
-  it('gets project name', () => {});
+  it('gets project name', () => {
+    expect(DataManager.getProjectName(0)).to.equal('test');
+  });
 
   it('share project', () => {});
 
-  it('get tasks', () => {});
-
-  it('get task', () => {});
-
-  it('adds task', () => {
-    const mockData = {projectId: 0};
-    DataManager.addTask(mockData);
-    expect(DataManager.getTasks(0).length).to.equal(1);
+  it('get tasks', () => {
+    expect(DataManager.getTasks().length).to.equal(1);
   });
 
-  it('add working log', () => {});
+  it('get task', () => {
+    expect(DataManager.getTask(0)).exist;
+  });
 
-  it('saves temporary working log', () => {});
+  it('adds task', () => {
+    const task = {projectId: 0};
+    DataManager.addTask(task);
+    expect(DataManager.getTasks(0).length).to.equal(2);
+  });
 
-  it('edits task', () => {});
+  it('add working log', () => {
+    const log = {id:0, start: TimeConverter.getTodaysDateWithoutTime, timeSpent: 100000};
+    DataManager.addWorkingLog(log);
+    expect(DataManager.getTask(0).working.length).to.equal(1);
+  });
 
-  it('removes task', () => {});
+  it('saves temporary working log', () => {
+    expect(DataManager.saveTmpWorkingLog(0, 1000)).to.equal(true);
+  });
 
-  it('gets max tasks id', () => {});
+  it('edits task', () => {
+    var task = DataManager.getTask(0);
+    task.name = 'changedName';
+    DataManager.editTask(task);
+    expect(DataManager.getTask(0).name).to.equal('changedName');
+  });
+
+  it('removes task', () => {
+    DataManager.removeTask(DataManager.getTask(0));
+    expect(DataManager.getTask(0)).not.exist;
+  });
+
+  it('gets max tasks id', () => {
+    expect(DataManager.getMaxTasksID()).to.equal(0);
+  });
 
   it('share task', () => {});
 });
@@ -392,4 +434,42 @@ describe('Dashboard', () => {
     const container = shallow(<Dashboard />);
     expect(container).exist;
   });
+});
+
+// Backend
+describe('Backend', () => {
+  beforeEach(()=>{
+    const credentials = {email: 'fdudek@example.net'};
+    Service.login(credentials);
+  })
+
+  it('loggs user in', () => {
+    const testResult = (res) => {
+      expect(res.projects).exist;
+    }
+    const credentials = {email: 'fdudek@example.net'};
+    Service.login(credentials, testResult);
+  });
+
+  it('fetches data from server', () => {
+    const testResult = (res) => {
+      expect(res.projects).exist;
+    }
+    Service.getData(testResult);
+  });
+
+  it('fetches projects from server', () => {
+    const testResult = (res) => {
+      expect(res.length > 0).to.equal(true);
+    }
+    Service.getProjects(testResult);
+  });
+
+  it('fetches tasks from server', () => {
+    const testResult = (res) => {
+      expect(res.length > 0).to.equal(true);
+    }
+    Service.getTasks(testResult);
+  });
+
 });

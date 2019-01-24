@@ -23,8 +23,8 @@ export default class Task extends Component {
     this.props.history.goBack();
   }
 
-  share = () => {
-    DataManager.shareTask(this.state.task);
+  share = (email) => {
+    DataManager.shareTask(this.state.task, email);
     this.toggleShare();
   }
 
