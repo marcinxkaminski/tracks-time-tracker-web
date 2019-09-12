@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/tracks-time-tracker-web/static/css/main.dde54616.chunk.css",
+    "main.js": "/tracks-time-tracker-web/static/js/main.b7f15d53.chunk.js",
+    "main.js.map": "/tracks-time-tracker-web/static/js/main.b7f15d53.chunk.js.map",
+    "runtime~main.js": "/tracks-time-tracker-web/static/js/runtime~main.08c6e1f3.js",
+    "runtime~main.js.map": "/tracks-time-tracker-web/static/js/runtime~main.08c6e1f3.js.map",
+    "static/js/2.818f2653.chunk.js": "/tracks-time-tracker-web/static/js/2.818f2653.chunk.js",
+    "static/js/2.818f2653.chunk.js.map": "/tracks-time-tracker-web/static/js/2.818f2653.chunk.js.map",
+    "index.html": "/tracks-time-tracker-web/index.html",
+    "precache-manifest.ed5da455e9afa7f3b0a04dc934a8bab4.js": "/tracks-time-tracker-web/precache-manifest.ed5da455e9afa7f3b0a04dc934a8bab4.js",
+    "service-worker.js": "/tracks-time-tracker-web/service-worker.js",
+    "static/css/main.dde54616.chunk.css.map": "/tracks-time-tracker-web/static/css/main.dde54616.chunk.css.map",
+    "static/media/logo.svg": "/tracks-time-tracker-web/static/media/logo.ade1deab.svg"
+  }
+}
